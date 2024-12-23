@@ -13,7 +13,6 @@ from typing import Any, Dict, Optional, Type
 import importlib_resources
 import yaml
 
-logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 pickle_dir = environ.get("ESCPOS_CAPABILITIES_PICKLE_DIR", mkdtemp())
