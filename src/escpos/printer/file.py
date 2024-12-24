@@ -15,6 +15,9 @@ from ..escpos import Escpos
 from ..exceptions import DeviceNotFoundError
 
 
+logger = logging.getLogger(__name__)
+
+
 def is_usable() -> bool:
     """Indicate whether this component can be used due to dependencies."""
     return True
@@ -79,9 +82,9 @@ class File(Escpos):
                     f"Could not open the specified file {self.devfile}:\n{e}"
                 )
             else:
-                logging.error("File printer %s not found", self.devfile)
+                logger.error("File printer %s not found", self.devfile)
                 return
-        logging.info("File printer enabled")
+        logger.info("File printer enabled")
 
     def flush(self) -> None:
         """Flush printing content."""
@@ -102,7 +105,7 @@ class File(Escpos):
         """Close system file."""
         if not self._device:
             return
-        logging.info("Closing File connection to printer %s", self.devfile)
+        logger.info("Closing File connection to printer %s", self.devfile)
         if not self.auto_flush:
             self.flush()
         self._device.close()

@@ -106,9 +106,9 @@ class Network(Escpos):
                     f"Could not open socket for {self.host}:\n{e}"
                 )
             else:
-                logging.error("Network device %s not found", self.host)
+                logger.error("Network device %s not found", self.host)
                 return
-        logging.info("Network printer enabled")
+        logger.info("Network printer enabled")
 
     def _raw(self, msg: bytes) -> None:
         """Print any command sent in raw format.
@@ -127,7 +127,7 @@ class Network(Escpos):
         """Close TCP connection."""
         if not self._device:
             return
-        logging.info("Closing Network connection to printer %s", self.host)
+        logger.info("Closing Network connection to printer %s", self.host)
         try:
             self._device.shutdown(socket.SHUT_RDWR)
         except socket.error:

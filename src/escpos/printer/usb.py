@@ -14,6 +14,8 @@ from typing import Dict, Literal, Optional, Type, Union
 from ..escpos import Escpos
 from ..exceptions import DeviceNotFoundError, USBNotFoundError
 
+logger = logging.getLogger(__name__)
+
 #: keeps track if the usb dependency could be loaded (:py:class:`escpos.printer.Usb`)
 _DEP_USB = False
 
@@ -142,9 +144,9 @@ class Usb(Escpos):
                     + f"\n{e}"
                 )
             else:
-                logging.error("USB device %s not found", tuple(self.usb_args.values()))
+                logger.error("USB device %s not found", tuple(self.usb_args.values()))
                 return
-        logging.info("USB printer enabled")
+        logger.info("USB printer enabled")
 
     def _check_driver(self) -> None:
         """Check the driver.
@@ -169,7 +171,7 @@ class Usb(Escpos):
                     pass
                 except usb.core.USBError as e:
                     if check_driver is not None:
-                        logging.error("Could not detatch kernel driver: %s", str(e))
+                        logger.error("Could not detatch kernel driver: %s", str(e))
 
     def _configure_usb(self) -> None:
         """Configure USB."""
@@ -179,7 +181,7 @@ class Usb(Escpos):
             self.device.set_configuration()
             self.device.reset()
         except usb.core.USBError as e:
-            logging.error("Could not set configuration: %s", str(e))
+            logger.error("Could not set configuration: %s", str(e))
 
     def _raw(self, msg: bytes) -> None:
         """Print any command sent in raw format.
@@ -199,7 +201,7 @@ class Usb(Escpos):
         """Release USB interface."""
         if not self._device:
             return
-        logging.info(
+        logger.info(
             "Closing Usb connection to printer %s", tuple(self.usb_args.values())
         )
         usb.util.dispose_resources(self._device)

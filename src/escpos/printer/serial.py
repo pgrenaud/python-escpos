@@ -151,9 +151,9 @@ class Serial(Escpos):
                     f"Unable to open serial printer on {self.devfile}:\n{e}"
                 )
             else:
-                logging.error("Serial device %s not found", self.devfile)
+                logger.error("Serial device %s not found", self.devfile)
                 return
-        logging.info("Serial printer enabled")
+        logger.info("Serial printer enabled")
 
     def _raw(self, msg: bytes) -> None:
         """Print any command sent in raw format.
@@ -172,7 +172,7 @@ class Serial(Escpos):
         """Close Serial interface."""
         if not self._device:
             return
-        logging.info("Closing Serial connection to printer %s", self.devfile)
+        logger.info("Closing Serial connection to printer %s", self.devfile)
         if self._device and self._device.is_open:
             self._device.flush()
             self._device.close()

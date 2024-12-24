@@ -15,6 +15,8 @@ from typing import Any, Literal, Optional, Union
 from ..escpos import Escpos
 from ..exceptions import DeviceNotFoundError
 
+logger = logging.getLogger(__name__)
+
 #: keeps track if the win32print dependency could be loaded (:py:class:`escpos.printer.Win32Raw`)
 _DEP_WIN32PRINT = False
 
@@ -134,15 +136,15 @@ class Win32Raw(Escpos):
                     + f"\n{e}"
                 )
             else:
-                logging.error("Win32Raw printing %s not available", self.printer_name)
+                logger.error("Win32Raw printing %s not available", self.printer_name)
                 return
-        logging.info("Win32Raw printer enabled")
+        logger.info("Win32Raw printer enabled")
 
     def close(self) -> None:
         """Close connection to default printer."""
         if self._device is False or self._device is None:  # Literal False | None
             return
-        logging.info("Closing Win32Raw connection to printer %s", self.printer_name)
+        logger.info("Closing Win32Raw connection to printer %s", self.printer_name)
         win32print.EndPagePrinter(self._device)
         win32print.EndDocPrinter(self._device)
         win32print.ClosePrinter(self._device)

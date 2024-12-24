@@ -18,6 +18,9 @@ from ..escpos import Escpos
 from ..exceptions import DeviceNotFoundError
 
 
+logger = logging.getLogger(__name__)
+
+
 def is_usable() -> bool:
     """Indicate whether this component can be used due to dependencies."""
     usable = False
@@ -150,15 +153,15 @@ class LP(Escpos):
                     + f"\n{e}"
                 )
             else:
-                logging.error("LP printing %s not available", self.printer_name)
+                logger.error("LP printing %s not available", self.printer_name)
                 return
-        logging.info("LP printer enabled")
+        logger.info("LP printer enabled")
 
     def close(self) -> None:
         """Stop the subprocess."""
         if not self._device:
             return
-        logging.info("Closing LP connection to printer %s", self.printer_name)
+        logger.info("Closing LP connection to printer %s", self.printer_name)
         self._is_closing = True
         if not self.auto_flush:
             self.flush()

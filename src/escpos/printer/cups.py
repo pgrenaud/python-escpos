@@ -16,6 +16,8 @@ from typing import Literal, Optional, Type, Union
 from ..escpos import Escpos
 from ..exceptions import DeviceNotFoundError
 
+logger = logging.getLogger(__name__)
+
 #: keeps track if the pycups dependency could be loaded (:py:class:`escpos.printer.CupsPrinter`)
 _DEP_PYCUPS = False
 
@@ -157,11 +159,11 @@ class CupsPrinter(Escpos):
                     + f"\n{e}"
                 )
             else:
-                logging.error(
+                logger.error(
                     "CupsPrinter printing %s not available", self.printer_name
                 )
                 return
-        logging.info("CupsPrinter printer enabled")
+        logger.info("CupsPrinter printer enabled")
 
     def _raw(self, msg: bytes) -> None:
         """Append any command sent in raw format to temporary file.
@@ -218,5 +220,5 @@ class CupsPrinter(Escpos):
             return
         if self.pending_job:
             self.send()
-        logging.info("Closing CUPS connection to printer %s", self.printer_name)
+        logger.info("Closing CUPS connection to printer %s", self.printer_name)
         self._device = False
